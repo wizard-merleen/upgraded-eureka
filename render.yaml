@@ -1,0 +1,54 @@
+databases:
+  - name: electro-clinic-db
+    plan: starter
+    region: frankfurt
+    postgresMajorVersion: 16
+
+services:
+  - type: web
+    name: electro-clinic-app
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    region: frankfurt
+    numInstances: 2
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: electro-clinic-db
+          property: connectionString
+      - key: PGSSL
+        value: "true"
+      - key: OWNER_EMAIL
+        sync: false
+      - key: GMAIL_APP_PASSWORD
+        sync: false
+      - key: OWNER_WHATSAPP
+        sync: false
+      - key: WA_PHONE_ID
+        sync: false
+      - key: WA_TOKEN
+        sync: false
+      - key: ADMIN_KEY
+        sync: false
+      - key: VAPID_PUBLIC
+        sync: false
+      - key: VAPID_PRIVATE
+        sync: false
+      - key: GNEWS_KEY
+        sync: false
+      - key: WA_TEMPLATE
+        value: new_request
+      - key: WA_LANG
+        value: en
+      - key: SLOT_CAPACITY
+        value: "1"
+      - key: WA_TEMPLATE_IMAGE
+        value: request_photo
+      - key: WA_TEMPLATE_VIDEO
+        value: request_video
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: ANTHROPIC_MODEL
+        value: claude-sonnet-5
